@@ -1,0 +1,10 @@
+{% extends "agencia/base.html" %}
+
+{% block content %}
+    <h2> {%if from.instance.pk%}Actualizar{%else%}Crear{%endif%}Marca_Modelo</h2>
+    <form method="post"enctype="multipart/from-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Guardad</button>
+    </from>
+{% endblock %}

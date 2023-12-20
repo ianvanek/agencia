@@ -1,0 +1,11 @@
+{% extends "agencia/base.html" %}
+
+{% block content %}
+    <h2>Eliminar modelo</h2>
+    <p>¿Estás seguro que deseas eliminar "{{modelo}}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sí, eliminar</button>
+    </from>
+    <a href="{% url 'modelo_list' %}">Cancelar</a>
+{% endblock %}

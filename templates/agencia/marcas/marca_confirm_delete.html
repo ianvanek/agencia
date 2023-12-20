@@ -1,0 +1,11 @@
+{% extends "agencia/base.html" %}
+
+{% block content %}
+    <h2>Eliminar marca</h2>
+    <p>¿Estás seguro que deseas eliminar "{{marca}}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sí, eliminar</button>
+    </from>
+    <a href="{% url 'marca_list' %}">Cancelar</a>
+{% endblock %}
