@@ -25,8 +25,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'ckeditor',
     'django.contrib.staticfiles',
     'apps.agencia',
+    'apps.users',
 ]
 
 MIDDLEWARE = [
@@ -111,6 +113,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static',]
 STATICFILES_FINDERS = [
  		   'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 		   'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -124,3 +127,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+    },
+}

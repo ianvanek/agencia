@@ -1,9 +1,0 @@
-{% extends "agencia/base.html" %}
-
-{% block content %}
-    <ul>
-        {% for auto in autos %}
-            <li><a href="{% url 'auto_detail' auto.pk %}">{{auto}}</a></li>
-        {% endfor %}
-    </ul>
-{% endblock %}
