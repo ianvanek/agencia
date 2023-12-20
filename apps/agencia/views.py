@@ -1,3 +1,4 @@
+import os
 from django.urls import reverse_lazy
 from django.views.generic import ListView , DetailView, CreateView, UpdateView, DeleteView
 from .models import Modelo, Marca, MarcaModelo, Auto
@@ -94,3 +95,41 @@ class MarcaModeloDeleteView(DeleteView):
     template_name = 'agencia/marcasmodelos/marca_modelo_confirm_delete.html'
     context_object_name = 'marcamodelo'
     success_url = reverse_lazy('marca_modelo_list')
+
+# CRUD Auto
+class AutoListView(ListView):
+    model = Auto
+    template_name ='agencia/autos/auto_list.html'
+    context_object_name = 'autos'
+
+class AutoDetailsViews(DetailView):
+    model = Auto
+    template_name = 'agencia/autos/auto_detail.html'
+    context_object_name = 'auto'
+
+class AutoCreateView(CreateView):
+    model = Auto
+    template_name = 'agencia/autos/auto_from.html'
+    context_object_name = 'auto'
+    fields = '__all__'
+    success_url = reverse_lazy('auto_list')
+
+class AutoUpdateView(UpdateView):
+    model = Auto
+    template_name = 'agencia/autos/auto_from.html'
+    fields = '__all__'
+    success_url = reverse_lazy('auto_list')
+
+class AutoDeleteView(DeleteView):
+    model = Auto
+    template_name = 'agencia/autos/auto_confirm_delete.html'
+    success_url = reverse_lazy('auto_list')
+    #eliminar imagen guardada en media (hay que importar OS primero)
+    def form_valid(self, form):
+        auto = self.get_object()
+        if auto.imagen:
+            image_path = auto.imagen.path
+        if os.path.exists(image_path):
+            os.remove(image_path)
+        return super().form_valid(form)
+    
