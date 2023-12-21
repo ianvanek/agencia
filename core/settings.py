@@ -12,9 +12,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG')
+DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS',cast=Csv())
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 
 # Application definition
@@ -25,8 +25,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'ckeditor',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
+    'ckeditor',
     'apps.agencia',
     'apps.users',
 ]
@@ -46,7 +47,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR /'templates'],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,12 +69,15 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        "ENGINE": 'django.db.backends.mysql',
-        'NAME': config('BD_NAME'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': config('DB_HOST'),
         'PORT': config('DB_PORT'),
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
@@ -113,11 +117,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static',]
+
+if DEBUG:
+    STATICFILES_DIRS = BASE_DIR / 'static',
+else:
+    STATIC_ROOT = BASE_DIR / 'static'
+
 STATICFILES_FINDERS = [
- 		   'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-		   'django.contrib.staticfiles.finders.FileSystemFinder',
-		]
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -133,3 +142,7 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'full',
     },
 }
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
